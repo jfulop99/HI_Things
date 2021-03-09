@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="en">
+<head>
+    <title>Issue Tracker</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Issue Tracker </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="btn-group-vertical">
+                <a class="btn btn-primary btn-lg" href="#" th:href="@{/users/all}">&nbsp;Users List </a>
+                <a class="btn btn-primary btn-lg" href="#" th:href="@{/groups/all}">&nbsp;Groups List </a>
+                <a class="btn btn-primary btn-lg" href="#" th:href="@{/issues/}">&nbsp;Issues List </a>
+                <a class="btn btn-primary btn-lg" href="#" th:href="@{/}"><span class="glyphicon glyphicon-search"></span>&nbsp;Coming Soon </a>
+                <a class="btn btn-primary btn-lg" href="#" th:href="@{/logout}">&nbsp;Logout </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Users</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Users </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <a class="btn btn-info" href="#" th:href="@{/}"> Back to Home </a>
+        </div>
+        <div class="col-md-3">
+            <a class="btn btn-success" href="#" th:href="@{/users/create}"> Add User </a>
+            <a class="btn btn-primary" href="#" th:href="@{/users/edit}" th:classappend="${users.empty} ? 'disabled' : ''"> Edit Users </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th> Id </th>
+                    <th> Username </th>
+                    <th> E-mail </th>
+                    <th> Lastname </th>
+                    <th> Firstname </th>
+                    <th> Action </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${users.empty}">
+                    <td colspan="2"> No Users Available </td>
+                </tr>
+                <tr th:each="user : ${users}">
+                    <td><span th:text="${user.id}"> Id </span></td>
+                    <td><span th:text="${user.username}"> Userame </span></td>
+                    <td><span th:text="${user.email}"> E-mail </span></td>
+                    <td><span th:text="${user.lastname}"> Lastname </span></td>
+                    <td><span th:text="${user.firstname}"> Firstname </span></td>
+                    <td><span><a class="btn btn-danger" href="#" th:href="@{/user/delete?(id=${user.id})}"
+                                 onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

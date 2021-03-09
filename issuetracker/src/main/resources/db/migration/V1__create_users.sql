@@ -1,0 +1,3 @@
+create table users(username varchar(50) not null primary key unique,password varchar(500) not null,is_enabled boolean not null, firstname varchar(50), lastname varchar(50), user_id bigint(10) auto_increment unique, email varchar(100));
+create table authorities (username varchar(50) not null,authority varchar(50) not null,constraint fk_authorities_users foreign key(username) references users(username));
+create unique index ix_auth_username on authorities (username,authority);

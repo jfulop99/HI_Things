@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Issue Management System</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+</head>
+<body>
+
+	<div class="container my-2">
+	<h1>Issues List</h1>
+
+		<div class="row">
+		<div class="col-md-9">
+			<a class="btn btn-info" href="#" th:href="@{/}"> Back to Home </a>
+		</div>
+		<div class="col-md-3">
+			<a th:href = "@{/issues/showNewIssueForm}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Issue </a>
+		</div>
+	</div>
+		<table border="1" class = "table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>
+						<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">
+							Id</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=regId&sortDir=' + ${reverseSortDir}}">
+							I_Id</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=openDate&sortDir=' + ${reverseSortDir}}">
+							Bejelentés&nbsp;</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=customerName&sortDir=' + ${reverseSortDir}}">
+							Partner neve</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=issueText&sortDir=' + ${reverseSortDir}}">
+							Probléma Leírása</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=issueGroup&sortDir=' + ${reverseSortDir}}">
+							Csoport</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=closeDate&sortDir=' + ${reverseSortDir}}">
+							Befejezés&nbsp;</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=resolutionText&sortDir=' + ${reverseSortDir}}">
+							Megoldás&nbsp;leírása</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=workHours&sortDir=' + ${reverseSortDir}}">
+							Mhrs</a>
+					</th>
+					<th>
+					<a th:href="@{'/issues/page/' + ${currentPage} + '?sortField=worksheet&sortDir=' + ${reverseSortDir}}">
+							MLap</a>
+					</th>
+					<th> Actions </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="issue : ${listIssues}">
+					<td th:text="${issue.id}"></td>
+					<td th:text="${issue.regId}"></td>
+					<td th:text="${issue.openDate}"></td>
+					<td th:text="${issue.customerName}"></td>
+					<td th:text="${issue.issueText}"></td>
+					<td th:text="${issue.issueGroup}"></td>
+					<td th:text="${issue.closeDate}"></td>
+					<td th:text="${issue.issueResolution}"></td>
+					<td th:text="${issue.workHours}"></td>
+					<td th:text="${issue.worksheet}"></td>
+					<td> <a th:href="@{/issues/showFormForUpdate/{id}(id=${issue.id})}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+					    <a class="btn btn-danger" th:href="@{/issues/deleteIssue/{id}(id=${issue.id})}"
+						   onclick="return confirm('Valóban törölni akarod ?');" ><span class="glyphicon glyphicon-trash"></span></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-12">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-6">
+					<span th:each="i: ${#numbers.sequence(currentPage, (((currentPage + 5) &gt totalPages) ? totalPages : currentPage + 5 ))}">
+						<a th:if="${currentPage != i}" th:href="@{'/issues/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+					</span>
+				</div>
+				 <div class="col-sm-1">
+    				<a th:if="${currentPage > 1}" th:href="@{'/issues/page/' + ${1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><span class="glyphicon glyphicon-fast-backward"></span></a>
+					<span th:unless="${currentPage > 1}" class="glyphicon glyphicon-fast-backward"></span>
+   				 </div>
+
+				<div class = "col-sm-1">
+					<a th:if="${currentPage > 1}" th:href="@{'/issues/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><span class="glyphicon glyphicon-backward"></span></a>
+					<span th:unless="${currentPage > 1}" class="glyphicon glyphicon-backward"></span>
+				</div>
+
+				<div class = "col-sm-1">
+					<a th:if="${currentPage < totalPages}" th:href="@{'/issues/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><span class="glyphicon glyphicon-forward"></span></a>
+					<span th:unless="${currentPage < totalPages}" class="glyphicon glyphicon-forward"></span>
+				</div>
+
+				 <div class="col-sm-1">
+    				<a th:if="${currentPage < totalPages}" th:href="@{'/issues/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"><span class="glyphicon glyphicon-fast-forward"></span></a>
+					<span th:unless="${currentPage < totalPages}" class="glyphicon glyphicon-fast-forward"></span>
+   				 </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

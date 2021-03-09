@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Groups</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1> Groups </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-info" href="#" th:href="@{/}"> Back to Home </a>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th> Id </th>
+                    <th> Name </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${groups.empty}">
+                    <td colspan="2"> No Groups Available </td>
+                </tr>
+                <tr th:each="group : ${groups}">
+                    <td><span th:text="${group.id}"> Id </span></td>
+                    <td><span th:text="${group.name}"> Name </span></td>
+                    <td><span><a class="btn btn-danger" href="#" th:href="@{/groups/delete?(id=${group.id})}"
+                                 onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-success" href="#" th:href="@{/groups/create}"> Add Group(s) </a>
+            <a class="btn btn-primary" href="#" th:href="@{/groups/edit}" th:classappend="${groups.empty} ? 'disabled' : ''"> Edit Groups </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

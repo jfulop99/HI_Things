@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Issue Management System</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+</head>
+<body>
+	<div class="container">
+		<h1>Issue Management System</h1>
+		<hr>
+		<h2>Save Issue</h2>
+		<p th:text="${#temporals.formatISO(localDate)}"></p>
+
+		<form action="#" th:action="@{/issues/saveIssue/}" th:object="${issue}" method="POST">
+			<div class="row col-12">
+				<input type="text" th:field="*{regId}" placeholder="Saját Id" class="form-control mb-4 col-2">
+				<span class="col-1"></span>
+
+				<input type="date" th:field="*{openDate}"
+					   th:value="${#temporals.formatISO(localDate)}" class="form-control mb-4 col-4">
+				<span class="col-1"></span>
+
+				<input type="date" th:field="*{closeDate}" placeholder="Lezárás dátuma" class="form-control mb-4 col-4">
+			</div>
+
+			<input type="text" th:field="*{customerName}" placeholder="Partner neve" class="form-control mb-4 col-4">
+
+			<input type="text" th:field="*{issueText}" placeholder="Leírás" class="form-control mb-4 col-8">
+
+			<input type="text" th:field="*{issueGroup}" placeholder="Kategória" class="form-control mb-4 col-4">
+
+			<input type="text" th:field="*{issueResolution}" placeholder="Megoldás leírása" class="form-control mb-4 col-8">
+
+			<input type="text" th:field="*{workHours}" placeholder="Óra" class="form-control mb-4 col-4">
+
+			<input type="text" th:field="*{worksheet}" placeholder="Munkalap" class="form-control mb-4 col-4">
+
+
+
+
+			<button type="submit" class="btn btn-info col-2"> Save Issue</button>
+		</form>
+		
+		<hr>
+		
+		<a th:href = "@{/issues/}"> Back to Issue List</a>
+	</div>
+</body>
+</html>
