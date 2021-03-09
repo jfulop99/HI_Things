@@ -1,5 +1,6 @@
 package hu.hotelinteractive.issuetracker.issues;
 
+import hu.hotelinteractive.issuetracker.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,9 @@ public class IssueController {
     @Autowired
     private IssueService issueService;
 
+    @Autowired
+    private CustomerService customerService;
+
 
     @GetMapping("/")
     public String viewAllIssues(Model model) {
@@ -28,14 +32,21 @@ public class IssueController {
     public String showNewIssueForm(Model model) {
         // create model attribute to bind form data
         Issue issue = new Issue();
+        issue.setOpenDate(LocalDate.now());
+        issue.setWorkHours(0);
         model.addAttribute("issue", issue);
-        model.addAttribute("localDate", LocalDate.now());
+        model.addAttribute("issueGroups", issueService.getAllIssueGroup());
+        model.addAttribute("customers", customerService.getAllCustomerSortByName());
         return "new_issue";
     }
 
     @PostMapping("/saveIssue")
     public String saveIssue(@ModelAttribute("issue") Issue issue) {
         // save employee to database
+
+        if (issue.getRegId() == 0) {
+            issue.setRegId(issueService.getNewRegId());
+        }
         issueService.saveIssue(issue);
         return "redirect:/issues/";
     }

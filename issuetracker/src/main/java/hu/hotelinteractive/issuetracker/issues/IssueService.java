@@ -16,6 +16,9 @@ public class IssueService {
     @Autowired
     private IssueRepository issueRepository;
 
+    @Autowired
+    private IssueGroupRepository issueGroupRepository;
+
     public List<Issue> getAllIssue() {
         return issueRepository.findAll();
     }
@@ -44,6 +47,21 @@ public class IssueService {
 
         return issueRepository.findAll(pageable);
 
+    }
+
+    public long getNewRegId() {
+        long regId = 0L;
+        Optional<Issue> lastIssue = issueRepository.findMaxId();
+        if (lastIssue.isPresent()) {
+            regId = lastIssue.get().getRegId() +1;
+        }
+
+        return regId;
+    }
+
+    public List<IssueGroup> getAllIssueGroup() {
+        Sort sort = Sort.by("name").ascending();
+        return issueGroupRepository.findAll(sort);
     }
 
 }

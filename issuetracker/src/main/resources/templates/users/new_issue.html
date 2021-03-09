@@ -4,33 +4,42 @@
 <meta charset="UTF-8">
 <title>Issue Management System</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+	<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /!-->
 
 </head>
 <body>
 	<div class="container">
 		<h1>Issue Management System</h1>
 		<hr>
-		<h2>Save Issue</h2>
-		<p th:text="${#temporals.formatISO(localDate)}"></p>
+		<h2>Új bejelentés</h2>
 
 		<form action="#" th:action="@{/issues/saveIssue/}" th:object="${issue}" method="POST">
 			<div class="row col-12">
-				<input type="text" th:field="*{regId}" placeholder="Saját Id" class="form-control mb-4 col-2">
+				<input type="text" th:field="*{regId}" readonly="readonly" placeholder="Saját Id" class="form-control mb-4 col-2">
 				<span class="col-1"></span>
 
 				<input type="date" th:field="*{openDate}"
-					   th:value="${#temporals.formatISO(localDate)}" class="form-control mb-4 col-4">
+					   th:value="${#temporals.formatISO(localDate)}" readonly="readonly" class="form-control mb-4 col-4">
 				<span class="col-1"></span>
 
 				<input type="date" th:field="*{closeDate}" placeholder="Lezárás dátuma" class="form-control mb-4 col-4">
 			</div>
 
-			<input type="text" th:field="*{customerName}" placeholder="Partner neve" class="form-control mb-4 col-4">
+			<select class="form-control mb-4 col-6" th:field="*{customerName}" >
+				<option th:each="customer : ${customers}" th:value="${customer.name}" th:text="${customer.name}"></option>
+			</select>
 
-			<input type="text" th:field="*{issueText}" placeholder="Leírás" class="form-control mb-4 col-8">
+			<!--input type="text" th:field="*{customerName}" required placeholder="Partner neve" class="form-control mb-4 col-4"!-->
 
-			<input type="text" th:field="*{issueGroup}" placeholder="Kategória" class="form-control mb-4 col-4">
+			<input type="text" th:field="*{issueText}" required placeholder="Leírás" class="form-control mb-4 col-8">
+
+			<select class="form-control mb-4 col-4" th:field="*{issueGroup}" >
+				<option th:each="igroup : ${issueGroups}" th:value="${igroup.name}" th:text="${igroup.name}"></option>
+			</select>
+
+			<!--input type="text" th:field="*{issueGroup}" required placeholder="Kategória" class="form-control mb-4 col-4"!-->
 
 			<input type="text" th:field="*{issueResolution}" placeholder="Megoldás leírása" class="form-control mb-4 col-8">
 
