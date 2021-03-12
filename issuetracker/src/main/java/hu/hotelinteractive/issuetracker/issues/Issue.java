@@ -1,12 +1,17 @@
 package hu.hotelinteractive.issuetracker.issues;
 
 
+import hu.hotelinteractive.issuetracker.IssueTrackerApplicationConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -33,11 +38,13 @@ public class Issue {
     private String customerName;
 
     @Column(name = "issue_text")
+    @NotEmpty
     private String issueText;
 
     @Column(name = "issue_group")
     private String issueGroup;
 
+    @CloseDateConstraint
     @Column(name = "close_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate closeDate;
@@ -46,8 +53,11 @@ public class Issue {
     private String issueResolution;
 
     @Column(name = "work_hours")
+    @Min(value = 0)
+    @Max(value = 100)
     private int workHours;
 
+    @WorkSheetNumberConstraint
     private String worksheet;
 
 }

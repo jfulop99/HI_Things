@@ -1,4 +1,4 @@
-package hu.hotelinteractive.issuetracker;
+package hu.hotelinteractive.issuetracker.user;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

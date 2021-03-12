@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,8 +43,13 @@ public class IssueController {
     }
 
     @PostMapping("/saveIssue")
-    public String saveIssue(@ModelAttribute("issue") Issue issue) {
+    public String saveIssue(@Valid Issue issue, BindingResult bindingResult, Model model) {
         // save employee to database
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("issueGroups", issueService.getAllIssueGroup());
+            model.addAttribute("customers", customerService.getAllCustomerSortByName());
+            return "new_issue";
+        }
 
         if (issue.getRegId() == 0) {
             issue.setRegId(issueService.getNewRegId());

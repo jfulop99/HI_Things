@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <title>Issue Management System</title>
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<script src="https://kit.fontawesome.com/36539589cd.js" crossorigin="anonymous"></script>
+	<!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"!-->
 
 	<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /!-->
 
@@ -17,6 +20,14 @@
 
 		<form action="#" th:action="@{/issues/saveIssue/}" th:object="${issue}" method="POST">
 			<div class="row col-12">
+				<span class="text-primary col-2">Naplószám:</span>
+				<span class="col-1"></span>
+				<span class="text-primary col-4">Bejelentés dátuma:</span>
+				<span class="col-1"></span>
+				<span class="text-primary col-4">Befejezés dátuma:</span>
+			</div>
+
+			<div class="row col-12">
 				<input type="text" th:field="*{regId}" readonly="readonly" placeholder="Saját Id" class="form-control mb-4 col-2">
 				<span class="col-1"></span>
 
@@ -24,38 +35,47 @@
 					   th:value="${#temporals.formatISO(localDate)}" readonly="readonly" class="form-control mb-4 col-4">
 				<span class="col-1"></span>
 
-				<input type="date" th:field="*{closeDate}" placeholder="Lezárás dátuma" class="form-control mb-4 col-4">
+				<input type="date" th:field="*{closeDate}" placeholder="Lezárás dátuma"
+					   class="form-control mb-4 col-4" th:classappend="${#fields.hasErrors('closeDate')} ? ' is-invalid'">
 			</div>
 
+			<span class="text-primary col-4">Partner neve:</span>
 			<select class="form-control mb-4 col-6" th:field="*{customerName}" >
 				<option th:each="customer : ${customers}" th:value="${customer.name}" th:text="${customer.name}"></option>
 			</select>
 
 			<!--input type="text" th:field="*{customerName}" required placeholder="Partner neve" class="form-control mb-4 col-4"!-->
 
-			<input type="text" th:field="*{issueText}" required placeholder="Leírás" class="form-control mb-4 col-8">
+			<span class="text-primary col-4">Bejelentés leírása:</span>
+			<input type="text" th:field="*{issueText}" placeholder="Leírás"
+				   class="form-control mb-4 col-8" th:classappend="${#fields.hasErrors('issueText')} ? ' is-invalid'">
 
+			<span class="text-primary col-4">Besorolás:</span>
 			<select class="form-control mb-4 col-4" th:field="*{issueGroup}" >
 				<option th:each="igroup : ${issueGroups}" th:value="${igroup.name}" th:text="${igroup.name}"></option>
 			</select>
 
 			<!--input type="text" th:field="*{issueGroup}" required placeholder="Kategória" class="form-control mb-4 col-4"!-->
 
+			<span class="text-primary col-4">Megoldás leírása:</span>
 			<input type="text" th:field="*{issueResolution}" placeholder="Megoldás leírása" class="form-control mb-4 col-8">
 
-			<input type="text" th:field="*{workHours}" placeholder="Óra" class="form-control mb-4 col-4">
+			<span class="text-primary col-4">Munkaórák száma:</span>
+			<input type="number" min="0" max="100" th:field="*{workHours}" placeholder="Óra" class="form-control mb-4 col-2">
 
-			<input type="text" th:field="*{worksheet}" placeholder="Munkalap" class="form-control mb-4 col-4">
+			<span class="text-primary col-4">Munkalap száma:</span>
+			<input type="text" th:field="*{worksheet}" placeholder="Munkalap"
+				   class="form-control mb-4 col-4" th:classappend="${#fields.hasErrors('worksheet')} ? ' is-invalid'">
 
 
 
 
-			<button type="submit" class="btn btn-info col-2"> Save Issue</button>
+			<button type="submit" class="btn btn-info col-2"><span class="fa fa-save"></span> Mentés</button>
 		</form>
 		
 		<hr>
 		
-		<a th:href = "@{/issues/}"> Back to Issue List</a>
+		<a class="btn btn-primary col-2" th:href = "@{/issues/}"><span class="fa fa-undo"></span> Vissza a listához</a>
 	</div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package hu.hotelinteractive.issuetracker;
+package hu.hotelinteractive.issuetracker.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
