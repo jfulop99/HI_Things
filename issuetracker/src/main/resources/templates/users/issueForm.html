@@ -16,9 +16,12 @@
 	<div class="container">
 		<h1>Issue Management System</h1>
 		<hr>
-		<h2>Új bejelentés</h2>
+		<h2><div th:text="${issue.regId} ? 'Bejelentés szerkesztése' : 'Új bejelentés'"></div></h2>
+
 
 		<form action="#" th:action="@{/issues/saveIssue/}" th:object="${issue}" method="POST">
+			<!-- Add hidden form field to handle update -->
+			<input type="hidden" th:field="*{id}" />
 			<div class="row col-12">
 				<span class="text-primary col-2">Naplószám:</span>
 				<span class="col-1"></span>
@@ -36,7 +39,7 @@
 				<span class="col-1"></span>
 
 				<input type="date" th:field="*{closeDate}" placeholder="Lezárás dátuma"
-					   class="form-control mb-4 col-4" th:classappend="${#fields.hasErrors('closeDate')} ? ' is-invalid'">
+					   class="form-control mb-4 col-4" th:classappend="${#fields.hasErrors('global')} ? 'is-invalid'">
 			</div>
 
 			<span class="text-primary col-4">Partner neve:</span>

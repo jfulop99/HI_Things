@@ -6,10 +6,10 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = CloseDateValidator.class)
-@Target( { ElementType.METHOD, ElementType.FIELD })
+@Target( { ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CloseDateConstraint {
-    String message() default "Cannot before open date";
+    String message() default "End date must be after begin date and both must be in the future";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

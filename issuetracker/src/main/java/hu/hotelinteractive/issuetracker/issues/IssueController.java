@@ -3,6 +3,7 @@ package hu.hotelinteractive.issuetracker.issues;
 import hu.hotelinteractive.issuetracker.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,10 +24,12 @@ public class IssueController {
     private CustomerService customerService;
 
 
+
     @GetMapping("/")
     public String viewAllIssues(Model model) {
 
-        return findPaginated(1, "id", "desc", model);
+        return findPaginated(1, "issue_id", "desc", "-- Minden partner --",
+                LocalDate.of(2000, 1, 1).toString(), LocalDate.now().toString(), model);
 
     }
 
@@ -39,7 +42,7 @@ public class IssueController {
         model.addAttribute("issue", issue);
         model.addAttribute("issueGroups", issueService.getAllIssueGroup());
         model.addAttribute("customers", customerService.getAllCustomerSortByName());
-        return "new_issue";
+        return "issueForm";
     }
 
     @PostMapping("/saveIssue")
@@ -48,7 +51,7 @@ public class IssueController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("issueGroups", issueService.getAllIssueGroup());
             model.addAttribute("customers", customerService.getAllCustomerSortByName());
-            return "new_issue";
+            return "issueForm";
         }
 
         if (issue.getRegId() == 0) {
@@ -66,7 +69,9 @@ public class IssueController {
 
         // set employee as a model attribute to pre-populate the form
         model.addAttribute("issue", issue);
-        return "update_issue";
+        model.addAttribute("issueGroups", issueService.getAllIssueGroup());
+        model.addAttribute("customers", customerService.getAllCustomerSortByName());
+        return "issueForm";
     }
 
     @GetMapping("/deleteIssue/{id}")
@@ -81,10 +86,14 @@ public class IssueController {
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
+                                @RequestParam("customerName") String customerName,
+                                @RequestParam("dateStart") String dateStart,
+                                @RequestParam("dateEnd") String dateEnd,
                                 Model model) {
         int pageSize = 8;
 
-        Page<Issue> page = issueService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        Page<Issue> page = issueService.findPaginated(pageNo, pageSize, sortField, sortDir, customerName,
+                LocalDate.parse(dateStart), LocalDate.parse(dateEnd));
         List<Issue> listIssues = page.getContent();
 
         model.addAttribute("currentPage", pageNo);
@@ -96,6 +105,23 @@ public class IssueController {
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         model.addAttribute("listIssues", listIssues);
+
+        model.addAttribute("customerName", customerName);
+
+        model.addAttribute("dateStart", dateStart);
+
+        model.addAttribute("dateEnd", dateEnd);
+
+        model.addAttribute("customers", customerService.getAllCustomerSortByName());
+
+
         return "issues";
+    }
+
+    @GetMapping("/teszt")
+    public void teszt() {
+
+        Page<Issue> teszt = issueService.findByDateAndCustomer(LocalDate.of(2016, 1, 1), LocalDate.now(), "Boscolo", Pageable.unpaged());
+
     }
 }

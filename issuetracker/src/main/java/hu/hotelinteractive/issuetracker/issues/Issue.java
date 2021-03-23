@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Entity
 @Table(name = "issues")
+@CloseDateConstraint
 public class Issue {
 
     @Id
@@ -44,7 +45,6 @@ public class Issue {
     @Column(name = "issue_group")
     private String issueGroup;
 
-    @CloseDateConstraint
     @Column(name = "close_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate closeDate;

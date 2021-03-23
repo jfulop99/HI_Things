@@ -1,20 +1,15 @@
 package hu.hotelinteractive.issuetracker;
 
-import hu.hotelinteractive.issuetracker.issues.CloseDateValidator;
-import hu.hotelinteractive.issuetracker.issues.WorkSheetNumberValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
-
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import java.lang.annotation.*;
 
 @EnableWebMvc
 @Configuration
@@ -37,4 +32,11 @@ public class IssueTrackerApplicationConfig implements WebMvcConfigurer {
         return resolver;
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/webjars/**")
+                .addResourceLocations("/webjars/");
+    }
 }
+

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,14 +39,33 @@ public class IssueService {
         issueRepository.deleteById(id);
     }
 
-    public Page<Issue> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+    public Page<Issue> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection, String customerName,
+                                     LocalDate dateStart, LocalDate dateEnd) {
 
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
 
-        return issueRepository.findAll(pageable);
+        String queryCustomerName;
+        if (customerName.contains("--")) {
+            queryCustomerName = "%";
+        }
+        else {
+            queryCustomerName = customerName;
+        }
+
+        return issueRepository.findByDateAndCustomer(dateStart, dateEnd, queryCustomerName, pageable);
+
+
+//        if (customerName.contains("--")) {
+//            return issueRepository.findAll(pageable);
+//        }
+//        else
+//        {
+//            return issueRepository.findByCustomerName(customerName, pageable);
+//        }
+
 
     }
 
@@ -64,4 +84,7 @@ public class IssueService {
         return issueGroupRepository.findAll(sort);
     }
 
+    public Page<Issue> findByDateAndCustomer(LocalDate dateStart, LocalDate dateEnd, String customerName, Pageable pageable) {
+        return issueRepository.findByDateAndCustomer(dateStart, dateEnd, customerName, pageable);
+    }
 }
