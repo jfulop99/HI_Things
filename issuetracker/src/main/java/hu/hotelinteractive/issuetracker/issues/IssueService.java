@@ -40,7 +40,7 @@ public class IssueService {
     }
 
     public Page<Issue> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection, String customerName,
-                                     LocalDate dateStart, LocalDate dateEnd) {
+                                     LocalDate dateStart, LocalDate dateEnd, String issueGroupName) {
 
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
@@ -48,14 +48,21 @@ public class IssueService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
 
         String queryCustomerName;
+        String queryIssueGroupName;
         if (customerName.contains("--")) {
             queryCustomerName = "%";
         }
         else {
             queryCustomerName = customerName;
         }
+        if (issueGroupName.contains("--")) {
+            queryIssueGroupName = "%";
+        }
+        else {
+            queryIssueGroupName = issueGroupName;
+        }
 
-        return issueRepository.findByDateAndCustomer(dateStart, dateEnd, queryCustomerName, pageable);
+        return issueRepository.findByDateAndCustomer(dateStart, dateEnd, queryCustomerName, queryIssueGroupName, pageable);
 
 
 //        if (customerName.contains("--")) {
@@ -84,7 +91,27 @@ public class IssueService {
         return issueGroupRepository.findAll(sort);
     }
 
-    public Page<Issue> findByDateAndCustomer(LocalDate dateStart, LocalDate dateEnd, String customerName, Pageable pageable) {
-        return issueRepository.findByDateAndCustomer(dateStart, dateEnd, customerName, pageable);
+    public Page<Issue> findByDateAndCustomer(LocalDate dateStart, LocalDate dateEnd, String customerName, String issueGroupName, Pageable pageable) {
+        return issueRepository.findByDateAndCustomer(dateStart, dateEnd, customerName, issueGroupName, pageable);
     }
+
+    public List<Issue> findForPrinting (LocalDate dateStart, LocalDate dateEnd, String customerName, String issueGroupName, String sortField, String sortDir) {
+        String queryCustomerName;
+        String queryIssueGroupName;
+        if (customerName.contains("--")) {
+            queryCustomerName = "%";
+        }
+        else {
+            queryCustomerName = customerName;
+        }
+        if (issueGroupName.contains("--")) {
+            queryIssueGroupName = "%";
+        }
+        else {
+            queryIssueGroupName = issueGroupName;
+        }
+
+        return issueRepository.findForPrinting(dateStart, dateEnd, queryCustomerName, queryIssueGroupName, sortField);
+    }
+
 }
